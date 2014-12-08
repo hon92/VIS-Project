@@ -5,22 +5,36 @@
  */
 package entity;
 
+import java.util.HashMap;
+
 /**
  *
  * @author Honza
  */
-public class Account
+public class Account implements IEntity
 {
 
+    private long id;
     private int accountNumber;
     private int dayLimit;
     private Customer owner;
 
-    public Account(int accountNumber, int dayLimit, Customer owner)
+    public Account(long id, int accountNumber, int dayLimit, Customer owner)
     {
+        this.id = id;
         this.accountNumber = accountNumber;
         this.dayLimit = dayLimit;
         this.owner = owner;
+    }
+
+    public long getId()
+    {
+        return id;
+    }
+
+    public void setId(long id)
+    {
+        this.id = id;
     }
 
     public int getAccountNumber()
@@ -51,6 +65,30 @@ public class Account
     public void setOwner(Customer owner)
     {
         this.owner = owner;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "AN: " + accountNumber; //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public HashMap<String, Object> decode()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public IEntity encode()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getTableName()
+    {
+        return "AccountTable";
     }
 
 }

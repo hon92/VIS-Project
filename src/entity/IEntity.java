@@ -3,23 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package interfaces;
+package entity;
 
-import entity.IEntity;
+import java.util.HashMap;
 
 /**
  *
  * @author Honza
  */
-public interface IStorage
+public interface IEntity
 {
 
-    public void insert(IEntity o);
+    public String getTableName();
 
-    public void update(IEntity o);
+    public HashMap<String, Object> decode();
 
-    public void delete(IEntity o);
-
-    public IEntity findById(long id);
-
+    public IEntity encode();
 }

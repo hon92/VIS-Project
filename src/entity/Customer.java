@@ -5,20 +5,24 @@
  */
 package entity;
 
+import java.util.HashMap;
+
 /**
  *
  * @author Honza
  */
-public class Customer
+public class Customer implements IEntity
 {
 
+    private long id;
     private String name;
     private String lastName;
     private String email;
     private String passWord;
 
-    public Customer(String name, String lastName, String email, String passWord)
+    public Customer(long id, String name, String lastName, String email, String passWord)
     {
+        this.id = id;
         this.name = name;
         this.lastName = lastName;
         this.email = email;
@@ -109,6 +113,34 @@ public class Customer
     public String toString()
     {
         return lastName + " " + name; //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public long getId()
+    {
+        return id;
+    }
+
+    public void setId(long id)
+    {
+        this.id = id;
+    }
+
+    @Override
+    public String getTableName()
+    {
+        return "CustomerTable";
+    }
+
+    @Override
+    public HashMap<String, Object> decode()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public IEntity encode()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

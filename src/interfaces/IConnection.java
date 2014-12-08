@@ -5,21 +5,11 @@
  */
 package interfaces;
 
-import entity.IEntity;
-
 /**
  *
  * @author Honza
  */
-public interface IStorage
+public interface IConnection
 {
-
-    public void insert(IEntity o);
-
-    public void update(IEntity o);
-
-    public void delete(IEntity o);
-
-    public IEntity findById(long id);
 
 }

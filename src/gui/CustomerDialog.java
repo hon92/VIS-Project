@@ -191,7 +191,8 @@ public class CustomerDialog extends javax.swing.JDialog
 
         else
         {
-            customer = new Customer(textFieldName.getName(),
+            //TODO:get newid from customers
+            customer = new Customer(1, textFieldName.getName(),
                     textFieldLastName.getText(),
                     textFieldEmail.getText(),
                     textFieldPassword.getText());

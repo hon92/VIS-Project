@@ -131,7 +131,8 @@ public class AccountDialog extends javax.swing.JDialog
             {
                 throw new NumberFormatException("Invalid account name or day limit");
             }
-            account = new Account(accNumber, dayLimit, owner);
+            //TODO:get new id for new account
+            account = new Account(1, accNumber, dayLimit, owner);
 
         }
         catch (NumberFormatException e)

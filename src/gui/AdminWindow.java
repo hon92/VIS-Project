@@ -18,7 +18,7 @@ import javax.swing.DefaultListModel;
 public class AdminWindow extends javax.swing.JFrame
 {
 
-    private IAdminController controller;
+    private final IAdminController controller;
 
     /**
      * Creates new form AdminWindow
@@ -28,40 +28,7 @@ public class AdminWindow extends javax.swing.JFrame
         initComponents();
         setLocationRelativeTo(null);
         controller = new AdminController(this);
-//        Connection c = null;
-//        try
-//        {
-//            PoolDataSource pds = PoolDataSourceFactory.getPoolDataSource();
-//            pds.setConnectionFactoryClassName("oracle.jdbc.pool.OracleDataSource");
-//            pds.setURL("jdbc:oracle:thin:@dbsys.cs.vsb.cz:1521:oracle");
-//            pds.setUser("hom0036");
-//            pds.setPassword("DgLA4CGzCd");
-//            pds.setInitialPoolSize(5);
-//            pds.setMinPoolSize(5);
-//            pds.setMaxPoolSize(10);
-//
-//            c = pds.getConnection();
-//
-//        }
-//        catch (SQLException ex)
-//        {
-//            Logger.getLogger(AdminWindow.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        finally
-//        {
-//            if (c != null)
-//            {
-//                try
-//                {
-//                    c.close();
-//                }
-//                catch (SQLException ex)
-//                {
-//                    Logger.getLogger(AdminWindow.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//                c = null;
-//            }
-//        }
+//       
 
     }
 
@@ -396,55 +363,6 @@ public class AdminWindow extends javax.swing.JFrame
             controller.showCustomerDetail(selectedCustomer);
         }
     }//GEN-LAST:event_buttonDetailActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[])
-    {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try
-        {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
-            {
-                if ("Nimbus".equals(info.getName()))
-                {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        }
-        catch (ClassNotFoundException ex)
-        {
-            java.util.logging.Logger.getLogger(AdminWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        catch (InstantiationException ex)
-        {
-            java.util.logging.Logger.getLogger(AdminWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        catch (IllegalAccessException ex)
-        {
-            java.util.logging.Logger.getLogger(AdminWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        catch (javax.swing.UnsupportedLookAndFeelException ex)
-        {
-            java.util.logging.Logger.getLogger(AdminWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable()
-        {
-            public void run()
-            {
-                new AdminWindow().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAdd;

@@ -5,16 +5,18 @@
  */
 package controller;
 
+import data.OracleDbStorage;
+import data.Storage;
 import entity.Account;
 import entity.Customer;
 import gui.AccountDialog;
 import gui.CustomerDetailDialog;
 import gui.CustomerDialog;
 import interfaces.IAdminController;
-import interfaces.IStorage;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
+import mappers.CustomerMapper;
 
 /**
  *
@@ -23,20 +25,22 @@ import javax.swing.JFrame;
 public class AdminController implements IAdminController
 {
 
-    private IStorage storage;
+    private Storage storage;
     private final JFrame window;
 
     public AdminController(JFrame window)
     {
         this.window = window;
+        storage = new OracleDbStorage();
     }
 
     @Override
     public List<Customer> searchCustomers(String reg)
     {
+
         List<Customer> list = new ArrayList<>();
-        list.add(new Customer("jan", "homola", "j@s.cz", "123"));
-        list.add(new Customer("aaa", "bb", "j@s.cz", "1"));
+        list.add(new Customer(1, "jan", "homola", "j@s.cz", "123"));
+        list.add(new Customer(2, "aaa", "bb", "j@s.cz", "1"));
         return list;
     }
 
@@ -70,6 +74,8 @@ public class AdminController implements IAdminController
         if (c != null)
         {
             //save to storage INSERT
+            CustomerMapper cm = new CustomerMapper(c);
+            cm.insert();
             System.out.println("insert");
         }
         else
