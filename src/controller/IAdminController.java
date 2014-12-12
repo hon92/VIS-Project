@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package interfaces;
+package controller;
 
 import entity.Customer;
 import java.util.List;
@@ -26,4 +26,6 @@ public interface IAdminController
     public void removeCustomer(Customer selectedCustomer);
 
     public void showCustomerDetail(Customer selectedCustomer);
+
+    public void logout();
 }

@@ -7,6 +7,8 @@ package gui;
 
 import entity.Account;
 import entity.Customer;
+import java.sql.Date;
+import java.time.Instant;
 
 /**
  *
@@ -15,6 +17,8 @@ import entity.Customer;
 public class AccountDialog extends javax.swing.JDialog
 {
 
+    private static final int ACCOUNTLENGHT = 5;
+    private static final int MAXDAYLIMIT = 50000;
     /**
      * Creates new form AccountDialog
      */
@@ -127,12 +131,12 @@ public class AccountDialog extends javax.swing.JDialog
             int accNumber = Integer.parseInt(an);
             int dayLimit = Integer.parseInt(dl);
 
-            if (an.length() != 10 && (dayLimit < 0) || dl.length() > 5)
+            if (an.length() != ACCOUNTLENGHT || ((dayLimit < 0) || dayLimit > MAXDAYLIMIT))
             {
                 throw new NumberFormatException("Invalid account name or day limit");
             }
-            //TODO:get new id for new account
-            account = new Account(1, accNumber, dayLimit, owner);
+
+            account = new Account(accNumber, 1000, new Date(Instant.now().toEpochMilli()), dayLimit, owner);
 
         }
         catch (NumberFormatException e)
@@ -147,7 +151,6 @@ public class AccountDialog extends javax.swing.JDialog
 
     private void buttonStornoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonStornoActionPerformed
     {//GEN-HEADEREND:event_buttonStornoActionPerformed
-        // TODO add your handling code here:
         account = null;
         dispose();
     }//GEN-LAST:event_buttonStornoActionPerformed

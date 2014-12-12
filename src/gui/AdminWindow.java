@@ -6,8 +6,9 @@
 package gui;
 
 import controller.AdminController;
+import controller.IAdminController;
 import entity.Customer;
-import interfaces.IAdminController;
+import entity.Employee;
 import java.util.List;
 import javax.swing.DefaultListModel;
 
@@ -23,12 +24,12 @@ public class AdminWindow extends javax.swing.JFrame
     /**
      * Creates new form AdminWindow
      */
-    public AdminWindow()
+    public AdminWindow(Employee loggedEmployee)
     {
         initComponents();
         setLocationRelativeTo(null);
-        controller = new AdminController(this);
-//       
+        controller = new AdminController(this, loggedEmployee);
+        requestFocus();
 
     }
 
@@ -50,7 +51,6 @@ public class AdminWindow extends javax.swing.JFrame
             labelName.setText(c.getName());
             labelLastName.setText(c.getLastName());
             labelEmail.setText(c.getEmail());
-            labelCreationDate.setText("dodelat");
             labelPassWord.setText(c.getPassWord());
         }
         else
@@ -58,7 +58,6 @@ public class AdminWindow extends javax.swing.JFrame
             labelName.setText(empty);
             labelLastName.setText(empty);
             labelEmail.setText(empty);
-            labelCreationDate.setText(empty);
             labelPassWord.setText(empty);
         }
     }
@@ -83,18 +82,17 @@ public class AdminWindow extends javax.swing.JFrame
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         buttonDetail = new javax.swing.JButton();
         labelName = new javax.swing.JLabel();
         labelLastName = new javax.swing.JLabel();
         labelEmail = new javax.swing.JLabel();
-        labelCreationDate = new javax.swing.JLabel();
         buttonEdit = new javax.swing.JButton();
         buttonRemove = new javax.swing.JButton();
         buttonAddAccount = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         labelPassWord = new javax.swing.JLabel();
         buttonAdd = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Admin panel");
@@ -129,8 +127,6 @@ public class AdminWindow extends javax.swing.JFrame
 
         jLabel5.setText("Email");
 
-        jLabel6.setText("Added to system");
-
         buttonDetail.setText("Detail");
         buttonDetail.addActionListener(new java.awt.event.ActionListener()
         {
@@ -145,8 +141,6 @@ public class AdminWindow extends javax.swing.JFrame
         labelLastName.setText("Unknown");
 
         labelEmail.setText("Unknown");
-
-        labelCreationDate.setText("Unknown");
 
         buttonEdit.setText("Edit");
         buttonEdit.addActionListener(new java.awt.event.ActionListener()
@@ -195,15 +189,13 @@ public class AdminWindow extends javax.swing.JFrame
                             .addComponent(jLabel3)
                             .addComponent(jLabel4)
                             .addComponent(jLabel5)
-                            .addComponent(jLabel6)
                             .addComponent(jLabel7))
-                        .addGap(48, 48, 48)
+                        .addGap(84, 84, 84)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(labelLastName)
-                                    .addComponent(labelEmail)
-                                    .addComponent(labelCreationDate))
+                                    .addComponent(labelEmail))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(buttonRemove, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
@@ -230,11 +222,7 @@ public class AdminWindow extends javax.swing.JFrame
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(labelEmail))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(labelCreationDate))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(41, 41, 41)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(labelPassWord))
@@ -258,6 +246,15 @@ public class AdminWindow extends javax.swing.JFrame
             }
         });
 
+        jButton1.setText("Logout");
+        jButton1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -269,17 +266,20 @@ public class AdminWindow extends javax.swing.JFrame
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
                     .addComponent(textFieldSearch))
                 .addGap(21, 21, 21)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 12, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(buttonSearch)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(buttonAdd))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(10, 10, 10)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jLabel2)))
-                .addContainerGap(24, Short.MAX_VALUE))
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonAdd)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -288,12 +288,17 @@ public class AdminWindow extends javax.swing.JFrame
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(textFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonSearch)
-                    .addComponent(buttonAdd))
-                .addGap(66, 66, 66)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jButton1))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(66, 66, 66)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buttonAdd)))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1))
@@ -344,6 +349,7 @@ public class AdminWindow extends javax.swing.JFrame
         if (selectedCustomer != null)
         {
             controller.removeCustomer(selectedCustomer);
+            ((DefaultListModel<Customer>) listCustomers.getModel()).removeElement(selectedCustomer);
         }
     }//GEN-LAST:event_buttonRemoveActionPerformed
 
@@ -364,6 +370,11 @@ public class AdminWindow extends javax.swing.JFrame
         }
     }//GEN-LAST:event_buttonDetailActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
+    {//GEN-HEADEREND:event_jButton1ActionPerformed
+        controller.logout();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAdd;
     private javax.swing.JButton buttonAddAccount;
@@ -371,16 +382,15 @@ public class AdminWindow extends javax.swing.JFrame
     private javax.swing.JButton buttonEdit;
     private javax.swing.JButton buttonRemove;
     private javax.swing.JButton buttonSearch;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel labelCreationDate;
     private javax.swing.JLabel labelEmail;
     private javax.swing.JLabel labelLastName;
     private javax.swing.JLabel labelName;

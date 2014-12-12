@@ -5,18 +5,16 @@
  */
 package controller;
 
-import data.OracleDbStorage;
-import data.Storage;
 import entity.Account;
 import entity.Customer;
+import entity.Employee;
 import gui.AccountDialog;
 import gui.CustomerDetailDialog;
 import gui.CustomerDialog;
-import interfaces.IAdminController;
-import java.util.ArrayList;
+import gui.LoginDialog;
 import java.util.List;
 import javax.swing.JFrame;
-import mappers.CustomerMapper;
+import mapper.MapperFactory;
 
 /**
  *
@@ -25,23 +23,20 @@ import mappers.CustomerMapper;
 public class AdminController implements IAdminController
 {
 
-    private Storage storage;
     private final JFrame window;
+    private Employee loggedEmployee;
 
-    public AdminController(JFrame window)
+    public AdminController(JFrame window, Employee loggedEmployee)
     {
         this.window = window;
-        storage = new OracleDbStorage();
+        this.loggedEmployee = loggedEmployee;
     }
 
     @Override
     public List<Customer> searchCustomers(String reg)
     {
-
-        List<Customer> list = new ArrayList<>();
-        list.add(new Customer(1, "jan", "homola", "j@s.cz", "123"));
-        list.add(new Customer(2, "aaa", "bb", "j@s.cz", "1"));
-        return list;
+        List<Customer> customers = MapperFactory.getCurrent().getCustomerMapper().selectAll();
+        return customers;
     }
 
     @Override
@@ -55,6 +50,7 @@ public class AdminController implements IAdminController
         if (customer != null)
         {
             //save to storage UPDATE
+            MapperFactory.getCurrent().getCustomerMapper().update(customer);
             System.out.println("update");
         }
         else
@@ -66,7 +62,7 @@ public class AdminController implements IAdminController
     @Override
     public void createNewCustomer()
     {
-        CustomerDialog ncd = new CustomerDialog(window, true, null);
+        CustomerDialog ncd = new CustomerDialog(window, true, loggedEmployee);
         ncd.setVisible(true);
 
         Customer c = ncd.getCustomer();
@@ -74,8 +70,8 @@ public class AdminController implements IAdminController
         if (c != null)
         {
             //save to storage INSERT
-            CustomerMapper cm = new CustomerMapper(c);
-            cm.insert();
+            c.setOwner(loggedEmployee);
+            MapperFactory.getCurrent().getCustomerMapper().insert(c);
             System.out.println("insert");
         }
         else
@@ -95,6 +91,7 @@ public class AdminController implements IAdminController
         if (newAccount != null)
         {
             //insert new acc to storage
+            MapperFactory.getCurrent().getAccountMapper().insert(newAccount);
             System.out.println("insert");
         }
         else
@@ -108,6 +105,7 @@ public class AdminController implements IAdminController
     public void removeCustomer(Customer selectedCustomer)
     {
         //delete customer from storage
+        MapperFactory.getCurrent().getCustomerMapper().delete(selectedCustomer);
         System.out.println("delete");
     }
 
@@ -116,6 +114,14 @@ public class AdminController implements IAdminController
     {
         CustomerDetailDialog cdd = new CustomerDetailDialog(window, true, selectedCustomer);
         cdd.setVisible(true);
+    }
+
+    @Override
+    public void logout()
+    {
+        window.dispose();
+        new LoginDialog(null, true).setVisible(true);
+
     }
 
 }

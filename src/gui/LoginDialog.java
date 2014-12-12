@@ -5,8 +5,9 @@
  */
 package gui;
 
-import entity.Customer;
-import mappers.CustomerMapper;
+import entity.Employee;
+import javax.swing.JOptionPane;
+import mapper.MapperFactory;
 
 /**
  *
@@ -23,6 +24,15 @@ public class LoginDialog extends javax.swing.JDialog
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
+
+        addWindowListener(new java.awt.event.WindowAdapter()
+        {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e)
+            {
+                System.exit(0);
+            }
+        });
     }
 
     /**
@@ -97,21 +107,22 @@ public class LoginDialog extends javax.swing.JDialog
 
     private void buttonLoginActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonLoginActionPerformed
     {//GEN-HEADEREND:event_buttonLoginActionPerformed
-        // TODO add your handling code here:
+
         String name = textFieldName.getText();
         String passWord = textFieldPassWord.getText();
 
-        Customer c = CustomerMapper.tryLogin(name, passWord);
-//        if (c != null)
-//        {
-//            new AdminWindow().setVisible(true);
-//        }
-//        else
-//        {
-//            System.exit(0);
-//        }
-        dispose();
-        new AdminWindow().setVisible(true);
+        Employee e = MapperFactory.getCurrent().getEmployeeMapper().tryLogin(name, passWord);
+
+        if (e != null)
+        {
+            new AdminWindow(e).setVisible(true);
+            dispose();
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null, "Invalid password or login", "Error", JOptionPane.ERROR_MESSAGE);
+
+        }
 
     }//GEN-LAST:event_buttonLoginActionPerformed
 
@@ -159,16 +170,7 @@ public class LoginDialog extends javax.swing.JDialog
         {
             public void run()
             {
-                LoginDialog dialog = new LoginDialog(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter()
-                {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e)
-                    {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
+                new LoginDialog(new javax.swing.JFrame(), true).setVisible(true);
             }
         });
     }

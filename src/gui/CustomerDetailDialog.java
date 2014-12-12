@@ -5,7 +5,12 @@
  */
 package gui;
 
+import entity.Account;
 import entity.Customer;
+import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import mapper.MapperFactory;
 
 /**
  *
@@ -38,6 +43,16 @@ public class CustomerDetailDialog extends javax.swing.JDialog
         initData();
     }
 
+    private Account getSelectedAccount()
+    {
+        Object selectedObject = listAccounts.getSelectedValue();
+        if (selectedObject != null && selectedObject instanceof Account)
+        {
+            return (Account) selectedObject;
+        }
+        return null;
+    }
+
     private void initData()
     {
         if (customer != null)
@@ -46,6 +61,14 @@ public class CustomerDetailDialog extends javax.swing.JDialog
             labelLastName.setText(customer.getLastName());
             labelEmail.setText(customer.getEmail());
             labelPassWord.setText(customer.getPassWord());
+
+            DefaultListModel<Account> model = new DefaultListModel<>();
+            List<Account> acc = MapperFactory.getCurrent().getAccountMapper().selectCustomersAccounts(customer.getId());
+            for (Account a : acc)
+            {
+                model.addElement(a);
+            }
+            listAccounts.setModel(model);
 
         }
         else
@@ -56,6 +79,26 @@ public class CustomerDetailDialog extends javax.swing.JDialog
             labelEmail.setText(empty);
             labelPassWord.setText(empty);
 
+        }
+    }
+
+    private void updateDetail(Account a)
+    {
+        if (a != null)
+        {
+            labelAccountNumber.setText(Integer.toString(a.getAccountNumber()));
+            labelAccountCreationDate.setText(a.getCreationDate().toString());
+            labelActualBalance.setText(Integer.toString(a.getActualBalance()));
+            labelDayLimit.setText(Integer.toString(a.getDayLimit()));
+
+        }
+        else
+        {
+            String empty = "Unknown";
+            labelAccountNumber.setText(empty);
+            labelAccountCreationDate.setText(empty);
+            labelActualBalance.setText(empty);
+            labelDayLimit.setText(empty);
         }
     }
 
@@ -79,7 +122,6 @@ public class CustomerDetailDialog extends javax.swing.JDialog
         labelActualBalance = new javax.swing.JLabel();
         labelDayLimit = new javax.swing.JLabel();
         buttonDayLimit = new javax.swing.JButton();
-        buttonShowTransactions = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         listAccounts = new javax.swing.JList();
         jLabel1 = new javax.swing.JLabel();
@@ -87,11 +129,9 @@ public class CustomerDetailDialog extends javax.swing.JDialog
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
         labelName = new javax.swing.JLabel();
         labelLastName = new javax.swing.JLabel();
         labelEmail = new javax.swing.JLabel();
-        labelCreationDate = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         labelPassWord = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -119,8 +159,13 @@ public class CustomerDetailDialog extends javax.swing.JDialog
         labelDayLimit.setText("Unknown");
 
         buttonDayLimit.setText("Change day limit");
-
-        buttonShowTransactions.setText("Show transactions");
+        buttonDayLimit.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                buttonDayLimitActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -142,15 +187,13 @@ public class CustomerDetailDialog extends javax.swing.JDialog
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(labelDayLimit)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
                                 .addComponent(buttonDayLimit, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(labelAccountCreationDate)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(labelActualBalance)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(buttonShowTransactions)))))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelAccountCreationDate)
+                                    .addComponent(labelActualBalance))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -167,8 +210,7 @@ public class CustomerDetailDialog extends javax.swing.JDialog
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(labelActualBalance)
-                    .addComponent(buttonShowTransactions))
+                    .addComponent(labelActualBalance))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -177,6 +219,13 @@ public class CustomerDetailDialog extends javax.swing.JDialog
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
+        listAccounts.addListSelectionListener(new javax.swing.event.ListSelectionListener()
+        {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt)
+            {
+                listAccountsValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(listAccounts);
 
         jLabel1.setText("Accounts");
@@ -189,15 +238,11 @@ public class CustomerDetailDialog extends javax.swing.JDialog
 
         jLabel9.setText("Email");
 
-        jLabel10.setText("Added to system");
-
         labelName.setText("Unknown");
 
         labelLastName.setText("Unknown");
 
         labelEmail.setText("Unknown");
-
-        labelCreationDate.setText("Unknown");
 
         jLabel11.setText("Password");
 
@@ -218,14 +263,12 @@ public class CustomerDetailDialog extends javax.swing.JDialog
                             .addComponent(jLabel7)
                             .addComponent(jLabel8)
                             .addComponent(jLabel9)
-                            .addComponent(jLabel10)
                             .addComponent(jLabel11))
-                        .addGap(48, 48, 48)
+                        .addGap(84, 84, 84)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(labelPassWord)
                             .addComponent(labelLastName)
-                            .addComponent(labelEmail)
-                            .addComponent(labelCreationDate))))
+                            .addComponent(labelEmail))))
                 .addContainerGap(37, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -243,15 +286,11 @@ public class CustomerDetailDialog extends javax.swing.JDialog
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel9)
                     .addComponent(labelEmail))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel10)
-                    .addComponent(labelCreationDate))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(labelPassWord))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         jLabel2.setText("Selected account");
@@ -299,11 +338,37 @@ public class CustomerDetailDialog extends javax.swing.JDialog
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void listAccountsValueChanged(javax.swing.event.ListSelectionEvent evt)//GEN-FIRST:event_listAccountsValueChanged
+    {//GEN-HEADEREND:event_listAccountsValueChanged
+        Account selectedAccount = getSelectedAccount();
+        updateDetail(selectedAccount);
+    }//GEN-LAST:event_listAccountsValueChanged
+
+    private void buttonDayLimitActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonDayLimitActionPerformed
+    {//GEN-HEADEREND:event_buttonDayLimitActionPerformed
+        Account selectedAccount = getSelectedAccount();
+        if (selectedAccount != null)
+        {
+            String newvalue = JOptionPane.showInputDialog(this, "Input new day limit", selectedAccount.getDayLimit());
+            try
+            {
+                int newDayLimit = Integer.parseInt(newvalue);
+                selectedAccount.setDayLimit(newDayLimit);
+                //update acc
+                MapperFactory.getCurrent().getAccountMapper().update(selectedAccount);
+                updateDetail(selectedAccount);
+            }
+            catch (NumberFormatException e)
+            {
+                dispose();
+            }
+        }
+
+    }//GEN-LAST:event_buttonDayLimitActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonDayLimit;
-    private javax.swing.JButton buttonShowTransactions;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -319,7 +384,6 @@ public class CustomerDetailDialog extends javax.swing.JDialog
     private javax.swing.JLabel labelAccountCreationDate;
     private javax.swing.JLabel labelAccountNumber;
     private javax.swing.JLabel labelActualBalance;
-    private javax.swing.JLabel labelCreationDate;
     private javax.swing.JLabel labelDayLimit;
     private javax.swing.JLabel labelEmail;
     private javax.swing.JLabel labelLastName;

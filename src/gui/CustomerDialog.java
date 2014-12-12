@@ -6,6 +6,8 @@
 package gui;
 
 import entity.Customer;
+import entity.Employee;
+import java.awt.Frame;
 
 /**
  *
@@ -18,13 +20,27 @@ public class CustomerDialog extends javax.swing.JDialog
      * Creates new form CustomerDialog
      */
     private Customer customer = null;
+    private Employee owner = null;
 
-    public CustomerDialog(java.awt.Frame parent, boolean modal, Customer c)
+    public CustomerDialog(java.awt.Frame parent, boolean modal, Customer customer)
+    {
+        this(parent, modal);
+        this.customer = customer;
+        initData();
+
+    }
+
+    public CustomerDialog(java.awt.Frame parent, boolean modal, Employee owner)
+    {
+        this(parent, modal);
+        this.owner = owner;
+    }
+
+    protected CustomerDialog(Frame parent, boolean modal)
     {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(parent);
-
         addWindowListener(new java.awt.event.WindowAdapter()
         {
             @Override
@@ -34,11 +50,7 @@ public class CustomerDialog extends javax.swing.JDialog
                 dispose();
             }
         });
-        if (c != null)
-        {
-            customer = c;
-            initData();
-        }
+
     }
 
     private void initData()
@@ -191,11 +203,13 @@ public class CustomerDialog extends javax.swing.JDialog
 
         else
         {
-            //TODO:get newid from customers
-            customer = new Customer(1, textFieldName.getName(),
+
+            customer = new Customer(
+                    textFieldName.getText(),
                     textFieldLastName.getText(),
                     textFieldEmail.getText(),
-                    textFieldPassword.getText());
+                    textFieldPassword.getText(),
+                    owner);
         }
     }
 
